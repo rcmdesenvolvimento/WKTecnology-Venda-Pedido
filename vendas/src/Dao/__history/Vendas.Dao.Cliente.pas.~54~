@@ -1,0 +1,80 @@
+unit Vendas.Dao.Cliente;
+
+interface
+
+uses
+  FireDAC.Comp.Client, FireDAC.DApt, Vendas.Conexao;
+
+type
+
+  TClienteDao = class
+
+  private
+
+  public
+
+    constructor Create;
+    destructor Destroy; override;
+
+    function SelecionaCliente(out erro: string; Codigo: Integer): TFDQuery;
+
+  end;
+
+var
+  FDConnection: TFDConnection;
+  Conexao: TConexao;
+  QryCliente: TFDQuery;
+
+implementation
+
+uses
+  System.SysUtils;
+
+{ TClienteDao }
+
+constructor TClienteDao.Create;
+begin
+  FDConnection := TFDConnection.Create(Nil);
+  Conexao      := TConexao.Create;
+  QryCliente   := TFDQuery.Create(nil);
+  FDConnection := Conexao.Connect;
+end;
+
+destructor TClienteDao.Destroy;
+begin
+  FDConnection.Connected := False;
+  FreeAndNil(FDConnection);
+  FreeAndNil(Conexao);
+  FreeAndNil(QryCliente);
+  inherited;
+end;
+
+function TClienteDao.SelecionaCliente(out erro: string; Codigo: Integer): TFDQuery;
+begin
+
+  if (Codigo = EmptyStr) then
+  begin
+    raise Exception.Create(erro);
+    Result := False;
+  end;
+
+
+  QryCliente.Connection := FDConnection;
+  try
+    QryCliente.Connection := FDConnection;
+    with QryCliente do
+    begin
+      SQL.Add('SELECT * FROM Cliente ');
+      SQL.Add('WHERE Codigo =:Codigo');
+      ParamByName('Codigo').AsInteger := StrToInt(Codigo);
+      Open;
+
+      if RecordCount = 0 then
+         erro := 'Cliente não encontrado!';
+    end;
+  finally
+    Result := QryCliente;
+  end;
+end;
+
+end.

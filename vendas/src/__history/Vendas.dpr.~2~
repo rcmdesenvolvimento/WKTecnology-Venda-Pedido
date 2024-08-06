@@ -1,0 +1,21 @@
+program Vendas;
+
+uses
+  Vcl.Forms,
+  Vendas.Principal in 'View\Vendas.Principal.pas' {frmPrincipal},
+  Vendas.View.Pedido in 'View\Vendas.View.Pedido.pas' {frmPedido},
+  Vendas.Model.Cliente in 'Model\Vendas.Model.Cliente.pas',
+  Vendas.Model.Pedido in 'Model\Vendas.Model.Pedido.pas',
+  Vendas.Model.PedidoProduto in 'Model\Vendas.Model.PedidoProduto.pas',
+  Vendas.Conexao in 'Conexao\Vendas.Conexao.pas',
+  Vendas.Dao.Cliente in 'Dao\Vendas.Dao.Cliente.pas',
+  Vendas.Controller.Cliente in 'Controller\Vendas.Controller.Cliente.pas';
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TfrmPrincipal, frmPrincipal);
+  Application.Run;
+end.

@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2024/06/27 08:26:35.000.971,=C:\Users\RICARDO\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2024/08/04 11:02:56.000.659,=C:\Users\RICARDO\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2024/08/04 11:04:21.000.531,D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\View\Vendas.Principal.pas=C:\Users\RICARDO\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2024/08/04 11:04:21.000.531,D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\View\Vendas.Principal.dfm=C:\Users\RICARDO\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>2024/08/04 11:04:34.000.465,D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Vendas.dproj=C:\Users\RICARDO\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+    <Transaction>2024/08/04 11:06:12.000.437,=D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Unit1.pas</Transaction>
+    <Transaction>2024/08/04 11:07:38.000.734,D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\View\Vendas.View.Pedido.dfm=D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Unit1.dfm</Transaction>
+    <Transaction>2024/08/04 11:07:38.000.734,D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\View\Vendas.View.Pedido.pas=D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Unit1.pas</Transaction>
+    <Transaction>2024/08/04 11:14:20.000.407,=D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Unit1.pas</Transaction>
+    <Transaction>2024/08/04 11:17:00.000.499,D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Model\Vendas.Model.Cliente.pas=D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Unit1.pas</Transaction>
+    <Transaction>2024/08/04 11:17:35.000.712,=D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Unit1.pas</Transaction>
+    <Transaction>2024/08/04 11:17:51.000.545,D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Model\Vendas.Model.Pedido.pas=D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Unit1.pas</Transaction>
+    <Transaction>2024/08/04 11:22:36.000.700,=D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Unit1.pas</Transaction>
+    <Transaction>2024/08/04 11:23:06.000.822,D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Model\Vendas.Model.PedidoProduto.pas=D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Unit1.pas</Transaction>
+    <Transaction>2024/08/04 11:36:10.000.233,=D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Unit1.pas</Transaction>
+    <Transaction>2024/08/04 11:37:16.000.048,D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Conexao\Vendas.Conexao.pas=D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Unit1.pas</Transaction>
+    <Transaction>2024/08/04 12:14:43.000.529,=D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Unit1.pas</Transaction>
+    <Transaction>2024/08/04 12:15:17.000.057,D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Dao\Vendas.Dao.Cliente.pas=D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Unit1.pas</Transaction>
+    <Transaction>2024/08/04 12:18:11.000.703,=D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Unit1.pas</Transaction>
+    <Transaction>2024/08/04 12:19:47.000.171,D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Controller\Vendas.Controller.Cliente.pas=D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Unit1.pas</Transaction>
+    <Transaction>2024/08/04 16:58:13.000.127,=D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Unit1.pas</Transaction>
+    <Transaction>2024/08/04 16:58:32.000.540,D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Model\Vendas.Model.Produto.pas=D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Unit1.pas</Transaction>
+    <Transaction>2024/08/04 17:08:20.000.705,=D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Unit1.pas</Transaction>
+    <Transaction>2024/08/04 17:08:36.000.409,D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Controller\Vendas.Controller.Produto.pas=D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Unit1.pas</Transaction>
+    <Transaction>2024/08/04 17:12:35.000.681,=D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Unit1.pas</Transaction>
+    <Transaction>2024/08/04 17:12:49.000.246,D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Dao\Vendas.Dao.Produto.pas=D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Unit1.pas</Transaction>
+    <Transaction>2024/08/04 18:32:31.000.387,=D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Unit1.pas</Transaction>
+    <Transaction>2024/08/04 18:32:48.000.181,D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Controller\Vendas.Controller.Pedido.pas=D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Unit1.pas</Transaction>
+    <Transaction>2024/08/04 18:35:33.000.902,=D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Unit1.pas</Transaction>
+    <Transaction>2024/08/04 18:35:49.000.021,D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Dao\Vendas.Dao.Pedido.pas=D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Unit1.pas</Transaction>
+    <Transaction>2024/08/05 22:15:50.000.391,=D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Unit1.pas</Transaction>
+    <Transaction>2024/08/05 22:16:05.000.831,D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Unit1.pas=D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Dao\Vendas.Dao.PedidoProduto.pas</Transaction>
+    <Transaction>2024/08/06 02:09:54.000.348,D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Dao\Vendas.Dao.PedidoProduto.pas=</Transaction>
+    <Transaction>2024/08/06 10:41:38.930,=D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Dao\Vendas.Dao.PedidoProduto.pas</Transaction>
+    <Transaction>2024/08/06 11:32:34.041,D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Dao\Vendas.Dao.PedidoProduto.pas=</Transaction>
+  </Transactions>
+	<ProjectSortOrder AutoSort="0" SortType="0">
+    <File Path="Conexao"/>
+    <File Path="Conexao\Vendas.Conexao.pas"/>
+    <File Path="Controller"/>
+    <File Path="Controller\Vendas.Controller.Cliente.pas"/>
+    <File Path="Controller\Vendas.Controller.Pedido.pas"/>
+    <File Path="Controller\Vendas.Controller.Produto.pas"/>
+    <File Path="Dao"/>
+    <File Path="Dao\Vendas.Dao.Cliente.pas"/>
+    <File Path="Dao\Vendas.Dao.Pedido.pas"/>
+    <File Path="Dao\Vendas.Dao.Produto.pas"/>
+    <File Path="Model"/>
+    <File Path="Model\Vendas.Model.Cliente.pas"/>
+    <File Path="Model\Vendas.Model.Pedido.pas"/>
+    <File Path="Model\Vendas.Model.PedidoProduto.pas"/>
+    <File Path="Model\Vendas.Model.Produto.pas"/>
+    <File Path="View"/>
+    <File Path="View\Vendas.Principal.pas"/>
+    <File Path="View\Vendas.Principal.dfm"/>
+    <File Path="View\Vendas.View.Pedido.pas"/>
+    <File Path="View\Vendas.View.Pedido.dfm"/>
+  </ProjectSortOrder>
+</BorlandProject>

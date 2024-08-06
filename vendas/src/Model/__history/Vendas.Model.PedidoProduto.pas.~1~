@@ -1,0 +1,7 @@
+unit Vendas.Model.PedidoProduto;
+
+interface
+
+implementation
+
+end.

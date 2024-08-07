@@ -176,7 +176,7 @@ object frmPedido: TfrmPedido
       Font.Style = [fsBold]
       ParentFont = False
     end
-    object Button2: TButton
+    object btnGravarPedido: TButton
       Left = 7
       Top = 12
       Width = 97
@@ -189,7 +189,7 @@ object frmPedido: TfrmPedido
       Font.Style = [fsBold]
       ParentFont = False
       TabOrder = 0
-      OnClick = Button2Click
+      OnClick = btnGravarPedidoClick
     end
     object btnDesfazerPedido: TButton
       Left = 110
@@ -452,20 +452,20 @@ object frmPedido: TfrmPedido
     end
   end
   object dsCliente: TDataSource
-    Left = 624
-    Top = 296
+    Left = 576
+    Top = 288
   end
   object FDPhysMySQLDriverLink: TFDPhysMySQLDriverLink
-    Left = 624
-    Top = 240
+    Left = 576
+    Top = 232
   end
   object dsProduto: TDataSource
-    Left = 624
+    Left = 576
     Top = 352
   end
   object dsPedido: TDataSource
     DataSet = FDMemPedido
-    Left = 624
+    Left = 576
     Top = 416
   end
   object FDMemPedido: TFDMemTable
@@ -480,8 +480,8 @@ object frmPedido: TfrmPedido
     UpdateOptions.CheckRequired = False
     UpdateOptions.AutoCommitUpdates = True
     StoreDefs = True
-    Left = 624
-    Top = 472
+    Left = 576
+    Top = 480
     object FDMemPedidocodigo_produto: TIntegerField
       FieldName = 'codigo_produto'
     end
@@ -507,5 +507,13 @@ object frmPedido: TfrmPedido
     object FDMemPedidototal_pedido: TFloatField
       FieldName = 'total_pedido'
     end
+  end
+  object dsCancelaPedido: TDataSource
+    Left = 664
+    Top = 288
+  end
+  object dsMostraPedido: TDataSource
+    Left = 664
+    Top = 344
   end
 end

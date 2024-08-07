@@ -26,9 +26,9 @@ type
     dsPedidoProduto: TDataSource;
     procedure btnSairClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure dsPedidoProdutoDataChange(Sender: TObject; Field: TField);
     procedure FormShow(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
   private
     NumPedido : string;
   public
@@ -63,11 +63,6 @@ begin
   TFloatField(dsPedidoProduto.DataSet.FieldByName('valor_total')).DisplayFormat    := '#,##0.00';
 end;
 
-procedure TfrmPedidoSelecionado.FormClose(Sender: TObject; var Action: TCloseAction);
-begin
-  FreeAndNil(ControllerPedido);
-end;
-
 procedure TfrmPedidoSelecionado.FormCreate(Sender: TObject);
 var
  erro : string;
@@ -84,6 +79,11 @@ begin
   finally
     //dbgProdutos.SetFocus;
   end;
+end;
+
+procedure TfrmPedidoSelecionado.FormDestroy(Sender: TObject);
+begin
+  FreeAndNil(ControllerPedido);
 end;
 
 procedure TfrmPedidoSelecionado.FormShow(Sender: TObject);

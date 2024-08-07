@@ -32,13 +32,12 @@ type
 var
   FDConnection     : TFDConnection;
   Conexao          : TConexao;
-  QryProduto       : TFDQuery;
+  PedidoProduto    : TPedidoProduto;
+  Pedido           : TPedido;
+  QryPedidoProduto : TFDQuery;
   QryPedido        : TFDQuery;
   QryNumPedido     : TFDQuery;
   nNumPedido       : Integer;
-  Pedido           : TPedido;
-  QryPedidoProduto : TFDQuery;
-  PedidoProduto    : TPedidoProduto;
 
 implementation
 
@@ -51,12 +50,12 @@ constructor TPedidoDao.Create;
 begin
   FDConnection     := TFDConnection.Create(Nil);
   Conexao          := TConexao.Create;
+  PedidoProduto    := TPedidoProduto.Create;
+  Pedido           := TPedido.Create;
+  QryPedidoProduto := TFDQuery.Create(nil);
   QryPedido        := TFDQuery.Create(nil);
   QryNumPedido     := TFDQuery.Create(nil);
   FDConnection     := Conexao.Connect;
-  Pedido           := TPedido.Create;
-  QryPedidoProduto := TFDQuery.Create(nil);
-  PedidoProduto    := TPedidoProduto.Create;
 end;
 
 function TPedidoDao.DeletePedido(out erro:string;NumeroPedido: Integer): Boolean;
@@ -99,14 +98,13 @@ end;
 
 destructor TPedidoDao.Destroy;
 begin
-  FDConnection.Connected := false;
   FreeAndNil(FDConnection);
   FreeAndNil(Conexao);
-  FreeAndNil(QryPedido);
-  FreeAndNil(QryNumPedido);
+  FreeAndNil(PedidoProduto);
   FreeAndNil(Pedido);
   FreeAndNil(QryPedidoProduto);
-  FreeAndNil(PedidoProduto);
+  FreeAndNil(QryPedido);
+  FreeAndNil(QryNumPedido);
   inherited;
 end;
 
@@ -115,17 +113,17 @@ begin
   Result := True;
   QryPedido.Connection := FDConnection;
   try
-      with QryPedido do
-      begin
-        Close;
-        SQL.Clear;
-        SQL.Add('INSERT INTO Pedido(NUMERO_PEDIDO,CODIGO_CLIENTE, VALOR_TOTAL)');
-        SQL.Add('VALUES(:NUMERO_PEDIDO,:CODIGO_CLIENTE,:VALOR_TOTAL)');
-        ParamByName('NUMERO_PEDIDO').Value  := Pedido.NumeroPedido;
-        ParamByName('CODIGO_CLIENTE').Value := Pedido.codigoCliente;
-        ParamByName('VALOR_TOTAL').Value    := Pedido.ValorTotal;
-        ExecSQL;
-      end;
+    with QryPedido do
+    begin
+      Close;
+      SQL.Clear;
+      SQL.Add('INSERT INTO Pedido(NUMERO_PEDIDO,CODIGO_CLIENTE, VALOR_TOTAL)');
+      SQL.Add('VALUES(:NUMERO_PEDIDO,:CODIGO_CLIENTE,:VALOR_TOTAL)');
+      ParamByName('NUMERO_PEDIDO').Value  := Pedido.NumeroPedido;
+      ParamByName('CODIGO_CLIENTE').Value := Pedido.codigoCliente;
+      ParamByName('VALOR_TOTAL').Value    := Pedido.ValorTotal;
+      ExecSQL;
+    end;
   except
     on ex: exception do
     begin
@@ -164,6 +162,7 @@ end;
 function TPedidoDao.LerPedidoProduto(FDMemPedido: TFDMemTable): Boolean;
 begin
   Result := true;
+  try
   FDMemPedido.Edit;
   FDMemPedido.First;
   while not(FDMemPedido.EOF) do
@@ -184,6 +183,12 @@ begin
         end;
       end;
       next;
+    end;
+  end;
+  except
+    on ex: exception do
+    begin
+      Result := False;
     end;
   end;
 end;

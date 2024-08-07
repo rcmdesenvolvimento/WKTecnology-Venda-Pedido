@@ -38,7 +38,7 @@ type
     FDMemPedidoquantidade: TIntegerField;
     FDMemPedidovalor_unitario: TCurrencyField;
     FDMemPedidovalor_total: TFloatField;
-    Button2: TButton;
+    btnGravarPedido: TButton;
     Label1: TLabel;
     btnDesfazerPedido: TButton;
     pnl001: TPanel;
@@ -60,13 +60,15 @@ type
     btnCancelarPedido: TButton;
     edtNumPedido: TEdit;
     Label6: TLabel;
+    dsCancelaPedido: TDataSource;
+    dsMostraPedido: TDataSource;
     procedure FormShow(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FDMemPedidoCalcFields(DataSet: TDataSet);
     procedure btnConfirmaClick(Sender: TObject);
     procedure dbgProdutosKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure btnFinalizarClick(Sender: TObject);
-    procedure Button2Click(Sender: TObject);
+    procedure btnGravarPedidoClick(Sender: TObject);
     procedure btnDesfazerPedidoClick(Sender: TObject);
     procedure btnProcurarClienteClick(Sender: TObject);
     procedure btnProcurarProdutoClick(Sender: TObject);
@@ -76,12 +78,15 @@ type
   private
     ControllerCliente : TControllerCliente;
     ControllerProduto : TControllerProduto;
+    ControllerPedido  : TControllerPedido;
 
     Cliente   : TCliente;
     Produto   : TProduto;
+    Pedido    : TPedido;
     FOperacao : TOperacao;
 
     procedure LimpaCampos;
+    procedure DesfazPedido;
     procedure InsereProduto;
     procedure AlteraProduto;
     procedure ProcurarCliente;
@@ -109,14 +114,11 @@ uses
 
 procedure TfrmPedido.btnDesfazerPedidoClick(Sender: TObject);
 begin
-  FDMemPedido.EmptyDataSet;
-  FDMemPedido.Next;
-  LimpaCampos;
+  FDMemPedido.Close;
+  DesfazPedido;
 end;
 
 procedure TfrmPedido.btnCancelarPedidoClick(Sender: TObject);
-var
-  ControllerPedido : TControllerPedido;
 begin
 
   ValidaNumeroPedido(Trim(edtNumPedido.Text));
@@ -124,14 +126,11 @@ begin
   if MessageDlg('Confirma o cancelamento do pedido ?', mtConfirmation, [mbYes, mbNo], 0) = mrYes then
   begin
     try
-      ControllerPedido := TControllerPedido.Create;
+      dsCancelaPedido.DataSet := ControllerPedido.SelecionaPedido(erro,StrToInt(Trim(edtNumPedido.Text)));
 
-      dsPedido.DataSet := ControllerPedido.SelecionaPedido(erro,StrToInt(Trim(edtNumPedido.Text)));
-
-      if dsPedido.DataSet.IsEmpty then
+      if dsCancelaPedido.DataSet.IsEmpty then
       begin
         MessageDlg(erro, mtInformation, [mbOk], 0, mbOk);
-        FreeAndNil(ControllerPedido);
         exit;
       end;
 
@@ -142,29 +141,22 @@ begin
       end;
         MessageDlg('Pedido excluído com sucesso!', mtInformation, [mbOk], 0, mbOk);
     finally
-      FreeAndNil(ControllerPedido);
       edtNumPedido.SetFocus;
     end;
   end;
 end;
 
 procedure TfrmPedido.btnCarregarPedidosClick(Sender: TObject);
-var
- ControllerPedido : TControllerPedido;
 begin
   ValidaNumeroPedido(Trim(edtNumPedido.Text));
 
-  ControllerPedido := TControllerPedido.Create;
+  dsMostraPedido.DataSet := ControllerPedido.SelecionaPedido(erro, StrToInt(Trim(edtNumPedido.Text)));
 
-  dsPedido.DataSet := ControllerPedido.SelecionaPedido(erro,StrToInt(Trim(edtNumPedido.Text)));
-
-  if dsPedido.DataSet.IsEmpty then
+  if dsMostraPedido.DataSet.IsEmpty then
    begin
      MessageDlg(erro, mtInformation, [mbOk], 0, mbOk);
      exit;
-  end;
-
-  FreeAndNil(ControllerPedido);
+   end;
 
   with TfrmPedidoSelecionado.Create(self,Trim(edtNumPedido.Text)) do
   try
@@ -172,8 +164,6 @@ begin
   finally
     FreeAndNil(frmPedidoSelecionado);
   end;
-
-
 end;
 
 procedure TfrmPedido.btnConfirmaClick(Sender: TObject);
@@ -197,9 +187,7 @@ begin
   Close;
 end;
 
-procedure TfrmPedido.Button2Click(Sender: TObject);
-var
-  ControllerPedido : TControllerPedido;
+procedure TfrmPedido.btnGravarPedidoClick(Sender: TObject);
 begin
   if FDMemPedido.IsEmpty then
    begin
@@ -215,22 +203,17 @@ begin
     FDMemPedido.FieldByName('total_pedido').AsFloat     := vrTotalPedido;
 
     try
-      ControllerPedido := TControllerPedido.Create;
-
       if Not ControllerPedido.CriarPedido(erro, FDMemPedido) then
        begin
          MessageDlg(erro, mtInformation, [mbOk], 0, mbOk);
-         FreeAndNil(ControllerPedido);
          exit;
        end;
-
-       MessageDlg('Pedido criado com sucesso', mtInformation, [mbOk], 0, mbOk);
+    finally
        edtCodigoCliente.Text := EmptyStr;
        edtNomeCliente.Text   := EmptyStr;
        FDMemPedido.EmptyDataSet;
        edtCodigoCliente.SetFocus;
-    finally
-      FreeAndNil(ControllerPedido);
+       MessageDlg('Pedido criado com sucesso', mtInformation, [mbOk], 0, mbOk);
     end;
   end;
 end;
@@ -251,12 +234,16 @@ procedure TfrmPedido.FormDestroy(Sender: TObject);
 begin
   FreeAndnil(Cliente);
   FreeAndnil(Produto);
+  FreeAndnil(ControllerPedido);
+  FreeAndnil(Pedido);
 end;
 
 procedure TfrmPedido.FormShow(Sender: TObject);
 begin
   Cliente             := TCliente.Create;
   Produto             := TProduto.Create;
+  Pedido              := TPedido.Create;
+  ControllerPedido    := TControllerPedido.Create;
   FDMemPedido.Active  := True;
   FOperacao           := opInserir;
   btnConfirma.Enabled := False;
@@ -267,6 +254,7 @@ procedure TfrmPedido.InsereProduto;
 begin
   with FDMemPedido do
   begin
+    Active := True;
     Append;
     FieldByName('Codigo_Produto').AsInteger  := StrToInt(edtCodigoProduto.Text);
     FieldByName('Descricao').AsString        := edtDescricaoProduto.Text;
@@ -375,21 +363,18 @@ begin
 end;
 
 function TfrmPedido.ValidaNumeroPedido(NumPedido: string) : string;
-var
-  Pedido:TPedido;
 begin
- Pedido := TPedido.Create;
- try
-  Pedido.NumeroPedido := NumPedido;
-  if Pedido.NumeroPedido.IsEmpty then
-   begin
-     MessageDlg(erro, mtInformation, [mbOk], 0, mbOk);
-     edtNumPedido.Clear;
-     exit;
+   try
+    Pedido.NumeroPedido := NumPedido;
+
+    if Pedido.NumeroPedido.IsEmpty then
+     begin
+       MessageDlg(erro, mtInformation, [mbOk], 0, mbOk);
+       edtNumPedido.SetFocus;
+       exit;
+     end;
+   finally
    end;
- finally
-   FreeAndNil(Pedido);
- end;
 end;
 
 function TfrmPedido.ValidarQuantidadeVrUnitario: Boolean;
@@ -444,6 +429,18 @@ begin
     btnConfirma.Enabled      := True;
     edtQuantidade.SetFocus;
   end;
+end;
+
+procedure TfrmPedido.DesfazPedido;
+begin
+  edtValorUnitario.Text    := EmptyStr;
+  edtQuantidade.Text       := EmptyStr;
+  edtDescricaoProduto.Text := EmptyStr;
+  edtCodigoProduto.Text    := EmptyStr;
+  edtNomeCliente.Text      := EmptyStr;
+  edtCodigoCliente.Text    := EmptyStr;
+  FOperacao                := opInserir;
+  edtCodigoCliente.SetFocus;
 end;
 
 procedure TfrmPedido.edtCodigoClienteEnter(Sender: TObject);

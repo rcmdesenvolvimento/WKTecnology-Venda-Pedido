@@ -12,8 +12,8 @@ object frmPedidoSelecionado: TfrmPedidoSelecionado
   Font.Name = 'Segoe UI'
   Font.Style = []
   Position = poScreenCenter
-  OnClose = FormClose
   OnCreate = FormCreate
+  OnDestroy = FormDestroy
   OnShow = FormShow
   TextHeight = 15
   object Panel1: TPanel
@@ -23,6 +23,7 @@ object frmPedidoSelecionado: TfrmPedidoSelecionado
     Height = 113
     Align = alTop
     TabOrder = 0
+    ExplicitWidth = 620
     object Label1: TLabel
       Left = 18
       Top = 5
@@ -160,7 +161,8 @@ object frmPedidoSelecionado: TfrmPedidoSelecionado
     Align = alClient
     Caption = 'pnlProduto'
     TabOrder = 1
-    ExplicitTop = 105
+    ExplicitWidth = 620
+    ExplicitHeight = 435
     object dbgProdutos: TDBGrid
       Left = 1
       Top = 1
@@ -179,11 +181,6 @@ object frmPedidoSelecionado: TfrmPedidoSelecionado
         item
           Expanded = False
           FieldName = 'codigo_produto'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -12
-          Font.Name = 'Segoe UI'
-          Font.Style = []
           Title.Alignment = taCenter
           Title.Caption = 'C'#243'digo Produto'
           Width = 115

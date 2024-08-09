@@ -16,7 +16,7 @@ uses
 
 type
 
-  TOperacao = (opInserir, opAlterar);
+  TOperacao = (opInserir, opAlterar, opCanelar);
 
   TfrmPedido = class(TForm)
     pnl002: TPanel;
@@ -72,9 +72,9 @@ type
     procedure btnDesfazerPedidoClick(Sender: TObject);
     procedure btnProcurarClienteClick(Sender: TObject);
     procedure btnProcurarProdutoClick(Sender: TObject);
-    procedure edtCodigoClienteEnter(Sender: TObject);
     procedure btnCancelarPedidoClick(Sender: TObject);
     procedure btnCarregarPedidosClick(Sender: TObject);
+    procedure edtCodigoClienteChange(Sender: TObject);
   private
     ControllerCliente : TControllerCliente;
     ControllerProduto : TControllerProduto;
@@ -85,7 +85,7 @@ type
     Pedido    : TPedido;
     FOperacao : TOperacao;
 
-    procedure LimpaCampos;
+    procedure LimpaCampos(FOperacao : TOperacao);
     procedure DesfazPedido;
     procedure InsereProduto;
     procedure AlteraProduto;
@@ -202,19 +202,16 @@ begin
     FDMemPedido.FieldByName('codigo_cliente').AsInteger := StrToInt(edtCodigoCliente.Text);
     FDMemPedido.FieldByName('total_pedido').AsFloat     := vrTotalPedido;
 
-    try
-      if Not ControllerPedido.CriarPedido(erro, FDMemPedido) then
-       begin
-         MessageDlg(erro, mtInformation, [mbOk], 0, mbOk);
-         exit;
-       end;
-    finally
-       edtCodigoCliente.Text := EmptyStr;
-       edtNomeCliente.Text   := EmptyStr;
-       FDMemPedido.EmptyDataSet;
-       edtCodigoCliente.SetFocus;
-       MessageDlg('Pedido criado com sucesso', mtInformation, [mbOk], 0, mbOk);
-    end;
+    if Not ControllerPedido.CriarPedido(erro, FDMemPedido) then
+     begin
+       MessageDlg(erro, mtInformation, [mbOk], 0, mbOk);
+       exit;
+     end;
+     edtCodigoCliente.Text := EmptyStr;
+     edtNomeCliente.Text   := EmptyStr;
+     FDMemPedido.EmptyDataSet;
+     edtCodigoCliente.SetFocus;
+     MessageDlg('Pedido criado com sucesso', mtInformation, [mbOk], 0, mbOk);
   end;
 end;
 
@@ -264,7 +261,7 @@ begin
     FieldByName('Valor_Unitario').AsCurrency := StrToCurr(edtValorUnitario.Text);
     Post;
   end;
-  LimpaCampos;
+  LimpaCampos(opInserir);
 end;
 
 procedure TfrmPedido.AlteraProduto;
@@ -278,17 +275,17 @@ begin
   end;
   pnl001.Enabled      := True;
   btnConfirma.Enabled := False;
-  LimpaCampos;
+  LimpaCampos(opInserir);
 end;
 
-procedure TfrmPedido.LimpaCampos;
+procedure TfrmPedido.LimpaCampos(FOperacao : TOperacao);
 begin
   edtCodigoProduto.Text    := EmptyStr;
   edtDescricaoProduto.Text := EmptyStr;
   edtQuantidade.Text       := EmptyStr;
   edtValorUnitario.Text    := EmptyStr;
-  FOperacao                := opInserir;
   btnConfirma.Enabled      := False;
+  FOperacao                := FOperacao;
   edtCodigoProduto.SetFocus;
 end;
 
@@ -415,7 +412,7 @@ begin
       FDMemPedido.Delete;
       FDMemPedido.Next;
     end;
-    LimpaCampos;
+    LimpaCampos(opInserir);
   end;
 
   if Key = VK_RETURN then
@@ -443,9 +440,15 @@ begin
   edtCodigoCliente.SetFocus;
 end;
 
-procedure TfrmPedido.edtCodigoClienteEnter(Sender: TObject);
+procedure TfrmPedido.edtCodigoClienteChange(Sender: TObject);
 begin
-  pnlPedido.Visible := True;
+  if(Trim(edtCodigoCliente.Text) <> '') then
+   begin
+     pnlPedido.Visible := False;
+     edtNomeCliente.Clear;
+   end
+   else
+     pnlPedido.Visible := True;
 end;
 
 end.

@@ -34,13 +34,13 @@
     <Transaction>2024/08/05 22:15:50.000.391,=D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Unit1.pas</Transaction>
     <Transaction>2024/08/05 22:16:05.000.831,D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Unit1.pas=D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Dao\Vendas.Dao.PedidoProduto.pas</Transaction>
     <Transaction>2024/08/06 02:09:54.000.348,D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Dao\Vendas.Dao.PedidoProduto.pas=</Transaction>
-    <Transaction>2024/08/06 10:41:38.930,=D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Dao\Vendas.Dao.PedidoProduto.pas</Transaction>
-    <Transaction>2024/08/06 11:32:34.041,D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Dao\Vendas.Dao.PedidoProduto.pas=</Transaction>
-    <Transaction>2024/08/06 13:46:54.274,=D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Unit1.pas</Transaction>
-    <Transaction>2024/08/06 13:47:54.218,D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\View\Vendas.View.Principal.pas=D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\View\Vendas.Principal.pas</Transaction>
-    <Transaction>2024/08/06 13:47:54.218,D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\View\Vendas.View.Principal.dfm=D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\View\Vendas.Principal.dfm</Transaction>
-    <Transaction>2024/08/06 13:48:55.004,D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\View\Vendas.View.PedidoSelecionado.pas=D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Unit1.pas</Transaction>
-    <Transaction>2024/08/06 13:48:55.004,D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\View\Vendas.View.PedidoSelecionado.dfm=D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Unit1.dfm</Transaction>
+    <Transaction>2024/08/06 10:41:38.000.930,=D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Dao\Vendas.Dao.PedidoProduto.pas</Transaction>
+    <Transaction>2024/08/06 11:32:34.000.041,D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Dao\Vendas.Dao.PedidoProduto.pas=</Transaction>
+    <Transaction>2024/08/06 13:46:54.000.274,=D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Unit1.pas</Transaction>
+    <Transaction>2024/08/06 13:47:54.000.218,D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\View\Vendas.View.Principal.pas=D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\View\Vendas.Principal.pas</Transaction>
+    <Transaction>2024/08/06 13:47:54.000.218,D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\View\Vendas.View.Principal.dfm=D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\View\Vendas.Principal.dfm</Transaction>
+    <Transaction>2024/08/06 13:48:55.000.004,D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\View\Vendas.View.PedidoSelecionado.pas=D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Unit1.pas</Transaction>
+    <Transaction>2024/08/06 13:48:55.000.004,D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\View\Vendas.View.PedidoSelecionado.dfm=D:\Projetos Delphi\0001 - WKTecnology 2 Chance\Novo WKTecnology\vendas\src\Unit1.dfm</Transaction>
   </Transactions>
 	<ProjectSortOrder AutoSort="0" SortType="0">
     <File Path="Conexao"/>

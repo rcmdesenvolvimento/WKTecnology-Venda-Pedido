@@ -17,12 +17,12 @@ type
     constructor Create;
     destructor Destroy; override;
 
-    function CriarPedido(out erro: string; FDMemPedido: TFDMemTable): Boolean;
-    function GravaPedido(Pedido: TPedido): Boolean;
-    function GeraNumeroPedido : Integer;
-    function GravaPedidoProduto(PedidoProduto: TPedidoProduto): Boolean;
-    function LerPedidoProduto(FDMemPedido: TFDMemTable):Boolean;
+    procedure GravaPedido(Pedido: TPedido);
+    procedure GravaPedidoProduto(PedidoProduto: TPedidoProduto; NumPedido: Integer);
+    procedure LerPedidoProduto(FDMemPedido: TFDMemTable);
 
+    function CriarPedido(out erro: string; FDMemPedido: TFDMemTable): Boolean;
+    function GeraNumeroPedido : Integer;
     function SelecionaPedido(out erro: string; NumeroPedido: Integer): TFDQuery;
     function DeletePedido(out erro:string;NumeroPedido: Integer): Boolean;
     function SelecionaPedidoProduto(out erro: String;NumeroPedido: Integer): TFDQuery;
@@ -36,6 +36,7 @@ var
   Pedido           : TPedido;
   QryPedidoProduto : TFDQuery;
   QryPedido        : TFDQuery;
+  QryAtuPedido     : TFDQuery;
   QryNumPedido     : TFDQuery;
   nNumPedido       : Integer;
 
@@ -55,6 +56,7 @@ begin
   QryPedidoProduto := TFDQuery.Create(nil);
   QryPedido        := TFDQuery.Create(nil);
   QryNumPedido     := TFDQuery.Create(nil);
+  QryAtuPedido     := TFDQuery.Create(nil);
   FDConnection     := Conexao.Connect;
 end;
 
@@ -105,64 +107,47 @@ begin
   FreeAndNil(QryPedidoProduto);
   FreeAndNil(QryPedido);
   FreeAndNil(QryNumPedido);
+  FreeAndNil(QryAtuPedido);
   inherited;
 end;
 
-function TPedidoDao.GravaPedido(Pedido: TPedido): Boolean;
+procedure TPedidoDao.GravaPedido(Pedido: TPedido);
 begin
-  Result := True;
   QryPedido.Connection := FDConnection;
-  try
-    with QryPedido do
-    begin
-      Close;
-      SQL.Clear;
-      SQL.Add('INSERT INTO Pedido(NUMERO_PEDIDO,CODIGO_CLIENTE, VALOR_TOTAL)');
-      SQL.Add('VALUES(:NUMERO_PEDIDO,:CODIGO_CLIENTE,:VALOR_TOTAL)');
-      ParamByName('NUMERO_PEDIDO').Value  := Pedido.NumeroPedido;
-      ParamByName('CODIGO_CLIENTE').Value := Pedido.codigoCliente;
-      ParamByName('VALOR_TOTAL').Value    := Pedido.ValorTotal;
-      ExecSQL;
-    end;
-  except
-    on ex: exception do
-    begin
-      Result := False;
-    end;
+  with QryPedido do
+  begin
+    Close;
+    SQL.Clear;
+    SQL.Add('INSERT INTO Pedido(NUMERO_PEDIDO,CODIGO_CLIENTE, VALOR_TOTAL)');
+    SQL.Add('VALUES(:NUMERO_PEDIDO,:CODIGO_CLIENTE,:VALOR_TOTAL)');
+    ParamByName('NUMERO_PEDIDO').Value  := Pedido.NumeroPedido;
+    ParamByName('CODIGO_CLIENTE').Value := Pedido.codigoCliente;
+    ParamByName('VALOR_TOTAL').Value    := Pedido.ValorTotal;
+    ExecSQL;
   end;
 end;
 
-function TPedidoDao.GravaPedidoProduto(PedidoProduto: TPedidoProduto):Boolean;
+procedure TPedidoDao.GravaPedidoProduto(PedidoProduto: TPedidoProduto; NumPedido: Integer);
 begin
-  Result := True;
   QryPedidoProduto.Connection := FDConnection;
-  try
-    with QryPedidoProduto do
-      begin
-        SQL.Clear;
-        SQL.Add('INSERT INTO Pedido_Produto(CODIGO_PRODUTO, NUMERO_PEDIDO, ');
-        SQL.Add('QUANTIDADE, VALOR_UNITARIO, VALOR_TOTAL)');
-        SQL.Add('VALUES(:CODIGO_PRODUTO, :NUMERO_PEDIDO, :QUANTIDADE, ');
-        SQL.Add(':VALOR_UNITARIO, :VALOR_TOTAL)');
-        ParamByName('CODIGO_PRODUTO').AsInteger := PedidoProduto.CodigoProduto;
-        ParamByName('NUMERO_PEDIDO').AsInteger  := PedidoProduto.NumeroPedido;
-        ParamByName('QUANTIDADE').AsInteger     := PedidoProduto.Quantidade;
-        ParamByName('VALOR_UNITARIO').AsFloat   := PedidoProduto.ValorUnitario;
-        ParamByName('VALOR_TOTAL').AsFloat      := PedidoProduto.ValorTotal;
-        ExecSQL;
-      end;
-  except
-      on ex: exception do
-      begin
-        Result := False;
-      end;
-    end;
+  with QryPedidoProduto do
+  begin
+    SQL.Clear;
+    SQL.Add('INSERT INTO Pedido_Produto(CODIGO_PRODUTO, NUMERO_PEDIDO, ');
+    SQL.Add('QUANTIDADE, VALOR_UNITARIO, VALOR_TOTAL)');
+    SQL.Add('VALUES(:CODIGO_PRODUTO, :NUMERO_PEDIDO, :QUANTIDADE, ');
+    SQL.Add(':VALOR_UNITARIO, :VALOR_TOTAL)');
+    ParamByName('CODIGO_PRODUTO').AsInteger := PedidoProduto.CodigoProduto;
+    ParamByName('NUMERO_PEDIDO').AsInteger  := NumPedido;
+    ParamByName('QUANTIDADE').AsInteger     := PedidoProduto.Quantidade;
+    ParamByName('VALOR_UNITARIO').AsFloat   := PedidoProduto.ValorUnitario;
+    ParamByName('VALOR_TOTAL').AsFloat      := PedidoProduto.ValorTotal;
+    ExecSQL;
+  end;
 end;
 
-function TPedidoDao.LerPedidoProduto(FDMemPedido: TFDMemTable): Boolean;
+procedure TPedidoDao.LerPedidoProduto(FDMemPedido: TFDMemTable);
 begin
-  Result := true;
-  try
   FDMemPedido.Edit;
   FDMemPedido.First;
   while not(FDMemPedido.EOF) do
@@ -170,25 +155,14 @@ begin
     with FDMemPedido do
     begin
       PedidoProduto.CodigoProduto := FieldByName('CODIGO_PRODUTO').AsInteger;
-      PedidoProduto.NumeroPedido  := nNumPedido;
+      PedidoProduto.NumeroPedido  := 0;
       PedidoProduto.Quantidade    := FieldByName('QUANTIDADE').AsInteger;
       PedidoProduto.ValorUnitario := FieldByName('VALOR_UNITARIO').AsCurrency;
       PedidoProduto.ValorTotal    := FieldByName('VALOR_TOTAL').AsCurrency;
-      try
-        GravaPedidoProduto(PedidoProduto);
-      except
-        on ex:exception do
-        begin
-          Result := false;
-        end;
-      end;
+
+      GravaPedidoProduto(PedidoProduto, StrToInt(Pedido.NumeroPedido));
+
       next;
-    end;
-  end;
-  except
-    on ex: exception do
-    begin
-      Result := False;
     end;
   end;
 end;
@@ -227,8 +201,8 @@ begin
         SQL.Add('pp.CODIGO, pp.CODIGO_PRODUTO, pr.DESCRICAO, ');
         SQL.Add('pp.QUANTIDADE, pp.CODIGO, pp.VALOR_UNITARIO, pp.VALOR_TOTAL ');
         SQL.Add('FROM PEDIDO p ');
-        SQL.Add('INNER JOIN PEDIDO_PRODUTO pp ON p.NUMERO_PEDIDO = pp.NUMERO_PEDIDO ');
-        SQL.Add('INNER JOIN PRODUTO pr ON pp.CODIGO_PRODUTO = pr.CODIGO ');
+        SQL.Add('LEFT JOIN PEDIDO_PRODUTO pp ON p.NUMERO_PEDIDO = pp.NUMERO_PEDIDO ');
+        SQL.Add('LEFT JOIN PRODUTO pr ON pp.CODIGO_PRODUTO = pr.CODIGO ');
         SQL.Add('INNER JOIN CLIENTE c on P.CODIGO_CLIENTE = C.CODIGO');
         SQL.Add('WHERE p.NUMERO_PEDIDO = :NUMERO_PEDIDO');
         ParamByName('NUMERO_PEDIDO').Value := NumeroPedido;
@@ -242,42 +216,55 @@ begin
   end;
 end;
 
+
 function TPedidoDao.CriarPedido(out erro: string; FDMemPedido: TFDMemTable): Boolean;
-var
-  bPedido, bPedidoProduto : Boolean ;
 begin
   Result := True;
+  try
+    FDConnection.StartTransaction;
 
-  FDConnection.StartTransaction;
+    Pedido.CodigoCliente := FDMemPedido.FieldByName('codigo_cliente').AsInteger;
+    Pedido.ValorTotal    := FDMemPedido.FieldByName('total_pedido').AsFloat;
 
-  Pedido.NumeroPedido  := IntToStr(GeraNumeroPedido);
-  Pedido.CodigoCliente := FDMemPedido.FieldByName('codigo_cliente').AsInteger;
-  Pedido.ValorTotal    := FDMemPedido.FieldByName('total_pedido').AsFloat;
+    // Gera o número do pedido
+    Pedido.NumeroPedido := IntToStr(GeraNumeroPedido);
 
-  bPedido              := GravaPedido(Pedido);
-  bPedidoProduto       := LerPedidoProduto(FDMemPedido);
+    // Grava o Pedido
+    GravaPedido(Pedido);
 
-  if(bPedido) And (bPedidoProduto) then
-     FDConnection.Commit
-  else
-  begin
-    FDConnection.Rollback;
-    erro   := 'Não foi possivel criar o pedido, processo cancelado!';
-    Result := False;
+    // Lê os produtos do pedido
+    LerPedidoProduto(FDMemPedido);
+
+    FDConnection.Commit;
+  except
+    on ex: exception do
+    begin
+      FDConnection.Rollback;
+      erro   := 'Não foi possivel criar o pedido, processo cancelado '+sLineBreak+ex.Message;
+      Result := False;
+    end;
   end;
-
 end;
 
 function TPedidoDao.GeraNumeroPedido: Integer;
 begin
   try
     try
+      QryAtuPedido.Connection := FDConnection;
+      with QryAtuPedido do
+      begin
+        Close;
+        SQL.Clear;
+        SQL.Add('UPDATE NumPedidoSeq SET num_pedido = num_pedido + 1');
+        ExecSQL;
+      end;
+
       QryNumPedido.Connection := FDConnection;
       with QryNumPedido do
       begin
         Close;
         SQL.Clear;
-        SQL.Add('select FLOOR(RAND() * 999999) as NUMERO_PEDIDO ');
+        SQL.Add('SELECT num_pedido AS NUMERO_PEDIDO FROM NumPedidoSeq ');
         Open;
       end;
     except
@@ -287,10 +274,8 @@ begin
       end;
     end;
   finally
-    nNumPedido := QryNumPedido.FieldByName('NUMERO_PEDIDO').AsInteger;
-    Result     := nNumPedido;
+    Result := QryNumPedido.FieldByName('NUMERO_PEDIDO').AsInteger;
   end;
 end;
-
 
 end.

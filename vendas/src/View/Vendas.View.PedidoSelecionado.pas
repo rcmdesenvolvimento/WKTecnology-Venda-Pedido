@@ -74,10 +74,9 @@ begin
     if dsPedidoProduto.DataSet.IsEmpty then
     begin
       MessageDlg(erro, mtInformation, [mbOk], 0, mbOk);
-      exit;
+      Close;
     end;
   finally
-    //dbgProdutos.SetFocus;
   end;
 end;
 

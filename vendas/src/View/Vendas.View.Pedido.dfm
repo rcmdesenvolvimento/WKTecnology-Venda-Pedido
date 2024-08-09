@@ -403,7 +403,7 @@ object frmPedido: TfrmPedido
       NumbersOnly = True
       ParentFont = False
       TabOrder = 0
-      OnEnter = edtCodigoClienteEnter
+      OnChange = edtCodigoClienteChange
     end
     object edtNomeCliente: TEdit
       Left = 193

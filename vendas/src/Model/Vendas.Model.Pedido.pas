@@ -31,13 +31,6 @@ type
     property CodigoCliente: Integer read SetCodigoCliente write FCodigoCliente;
     property ValorTotal: Currency read SetValorTotal write FValorTotal;
 
-    {
-      property NumeroPedido: Integer read FNumeroPedido write SetNumeroPedido;
-      property DataPedido: TDateTime read FDataPedido write SetDataPedido;
-      property CodigoCliente: Integer read FCodigoCliente write SetCodigoCliente;
-      property ValorTotal: Currency read FValorTotal write SetValorTotal;
-    }
-
   end;
 
 implementation

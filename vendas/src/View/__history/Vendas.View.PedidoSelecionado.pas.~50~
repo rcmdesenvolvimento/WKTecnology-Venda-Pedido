@@ -1,0 +1,101 @@
+unit Vendas.View.PedidoSelecionado;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.StdCtrls, Vcl.ExtCtrls, Data.DB, Vcl.Grids,
+  Vcl.DBGrids, Vendas.Controller.Pedido;
+
+type
+  TfrmPedidoSelecionado = class(TForm)
+    Panel1: TPanel;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    edtCodCliente: TEdit;
+    edtNumPedido: TEdit;
+    edtNomeCliente: TEdit;
+    edtDataPedido: TEdit;
+    Label4: TLabel;
+    EdtValorTotalPedido: TEdit;
+    Label5: TLabel;
+    pnlProduto: TPanel;
+    btnSair: TButton;
+    dbgProdutos: TDBGrid;
+    dsPedidoProduto: TDataSource;
+    procedure btnSairClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure dsPedidoProdutoDataChange(Sender: TObject; Field: TField);
+    procedure FormShow(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+  private
+    NumPedido : string;
+  public
+   constructor Create(AOwner : TComponent; pNumPedido : String);
+  end;
+
+var
+  frmPedidoSelecionado : TfrmPedidoSelecionado;
+  ControllerPedido     : TControllerPedido;
+
+implementation
+
+uses
+  Vcl.Dialogs;
+
+{$R *.dfm}
+
+procedure TfrmPedidoSelecionado.btnSairClick(Sender: TObject);
+begin
+  Close;
+end;
+
+constructor TfrmPedidoSelecionado.Create(AOwner: TComponent; pNumPedido: String);
+begin
+  inherited Create(AOwner);
+  NumPedido := pNumPedido;
+end;
+
+procedure TfrmPedidoSelecionado.dsPedidoProdutoDataChange(Sender: TObject; Field: TField);
+begin
+  TFloatField(dsPedidoProduto.DataSet.FieldByName('valor_unitario')).DisplayFormat := '#,##0.00';
+  TFloatField(dsPedidoProduto.DataSet.FieldByName('valor_total')).DisplayFormat    := '#,##0.00';
+end;
+
+procedure TfrmPedidoSelecionado.FormCreate(Sender: TObject);
+var
+ erro : string;
+begin
+  ControllerPedido := TControllerPedido.Create;
+  try
+    dsPedidoProduto.DataSet := ControllerPedido.SelecionaPedidoProduto(erro,StrToInt(Trim(NumPedido)));
+
+    if dsPedidoProduto.DataSet.IsEmpty then
+    begin
+      MessageDlg(erro, mtInformation, [mbOk], 0, mbOk);
+      exit;
+    end;
+  finally
+    ShowMessage('saindo....');
+  end;
+end;
+
+procedure TfrmPedidoSelecionado.FormDestroy(Sender: TObject);
+begin
+  FreeAndNil(ControllerPedido);
+end;
+
+procedure TfrmPedidoSelecionado.FormShow(Sender: TObject);
+begin
+  with Not dsPedidoProduto.DataSet.Eof do
+  begin
+    edtCodCliente.Text       := FieldByName('Codigo').Value;
+    edtNomeCliente.Text      := FieldByName('nome').Value;
+    edtNumPedido.Text        := FieldByName('numero_pedido').Value;
+    edtDataPedido.Text       := FieldByName('data_emissao').Value;
+    EdtValorTotalPedido.Text := FormatFloat('#,##0.00',FieldByName('TOTALPEDIDO').Value);
+  end;
+end;
+
+end.

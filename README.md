@@ -7,11 +7,10 @@
   <li>FireDAC</li>
   <li>MySQL 8.5</li>
 </ul>
-<h2>Padrão de Codificação</h2>
+<h2>Técnicas aplicadas</h2>
 <ul>
-  <li>SOLID</li>
+  <li>Clean Code</li>
+  <li>POO - Programação Orientada a Objeto</li>
+  <li>MVC - Model View Controller</li>  
 </ul>
-<h2>Padrão de Projeto</h2>
-<ul>
-  <li>MVC</li>
-</ul>
+

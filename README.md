@@ -7,7 +7,7 @@
   <li>FireDAC</li>
   <li>MySQL 8.5</li>
 </ul>
-<h2>Técnicas aplicadas</h2>
+<h2>Técnicas Aplicadas</h2>
 <ul>
   <li>Clean Code</li>
   <li>POO - Programação Orientada a Objeto</li>

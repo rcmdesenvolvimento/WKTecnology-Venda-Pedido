@@ -14,7 +14,6 @@ type
   TfrmPrincipal = class(TForm)
     Button1: TButton;
     Button2: TButton;
-    FDConnection1: TFDConnection;
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
   private

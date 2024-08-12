@@ -44,8 +44,4 @@ object frmPrincipal: TfrmPrincipal
     TabOrder = 1
     OnClick = Button2Click
   end
-  object FDConnection1: TFDConnection
-    Left = 144
-    Top = 192
-  end
 end

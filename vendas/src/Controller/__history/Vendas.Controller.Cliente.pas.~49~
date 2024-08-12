@@ -1,0 +1,58 @@
+unit Vendas.Controller.Cliente;
+
+interface
+
+uses
+  FireDAC.Comp.Client, vendas.dao.cliente, Data.DB;
+
+type
+
+  TControllerCliente = class
+
+  private
+
+  ClienteDao : TClienteDao;
+  QryCliente : TFDQuery;
+  dsCliente  : TDataSource;
+
+  public
+
+    constructor Create;
+    destructor Destroy; override;
+
+    function SelecionaCliente(out erro : string; Codigo : string): TFDQuery;
+
+  end;
+
+implementation
+
+uses
+  System.SysUtils;
+
+{ TControllerCliente }
+
+constructor TControllerCliente.Create;
+begin
+  QryCliente            := TFDQuery.Create(nil);
+  dsCliente             := TDataSource.Create(nil);
+  QryCliente.DataSource := dsCliente;
+end;
+
+destructor TControllerCliente.Destroy;
+begin
+  FreeAndNil(QryCliente);
+  FreeAndNil(ClienteDao);
+  inherited;
+end;
+
+function TControllerCliente.SelecionaCliente(out erro : string; Codigo : string): TFDQuery;
+var
+  error : string;
+begin
+  ClienteDao := TClienteDao.Create;
+  erro := 'Cliente não encontrado!';
+
+  Result := ClienteDao.SelecionaCliente(erro, StrToInt(Codigo));
+end;
+
+end.

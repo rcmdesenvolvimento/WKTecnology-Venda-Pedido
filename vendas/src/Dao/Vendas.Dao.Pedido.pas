@@ -1,0 +1,246 @@
+unit Vendas.Dao.Pedido;
+
+interface
+
+uses
+  FireDAC.Comp.Client, FireDAC.DApt, Vendas.Conexao, Datasnap.DBClient,
+  Vendas.Model.Pedido, Vendas.Model.PedidoProduto;
+
+type
+
+  TPedidoDao = class
+
+  private
+
+  public
+
+    constructor Create;
+    destructor Destroy; override;
+
+    procedure GravaPedido(Pedido: TPedido);
+
+    function CriarPedido(out erro: string; FDMemPedido: TFDMemTable): Boolean;
+    function GeraNumeroPedido : Integer;
+    function SelecionaPedido(out erro: string; NumeroPedido: Integer): TFDQuery;
+    function DeletePedido(out erro:string;NumeroPedido: Integer): Boolean;
+    function SelecionaPedidoProduto(out erro: String;NumeroPedido: Integer): TFDQuery;
+
+  end;
+
+var
+  FDConnection     : TFDConnection;
+  Conexao          : TConexao;
+  PedidoProduto    : TPedidoProduto;
+  Pedido           : TPedido;
+  QryPedidoProduto : TFDQuery;
+  QryPedido        : TFDQuery;
+  QryAtuPedido     : TFDQuery;
+  QryNumPedido     : TFDQuery;
+  nNumPedido       : Integer;
+
+implementation
+
+uses
+  System.SysUtils, Vendas.Dao.PedidoProduto;
+
+{ TPedidoDao }
+
+constructor TPedidoDao.Create;
+begin
+  FDConnection     := TFDConnection.Create(Nil);
+  Conexao          := TConexao.Create;
+  PedidoProduto    := TPedidoProduto.Create;
+  Pedido           := TPedido.Create;
+  QryPedidoProduto := TFDQuery.Create(nil);
+  QryPedido        := TFDQuery.Create(nil);
+  QryNumPedido     := TFDQuery.Create(nil);
+  QryAtuPedido     := TFDQuery.Create(nil);
+  FDConnection     := Conexao.Connect;
+end;
+
+function TPedidoDao.DeletePedido(out erro:string;NumeroPedido: Integer): Boolean;
+begin
+  Result := True;
+  FDConnection.StartTransaction;
+  try
+    QryPedido.Connection := FDConnection;
+    with QryPedido do
+    begin
+      Active := false;
+      SQL.Clear;
+      SQL.Add('DELETE FROM Pedido_Produto ');
+      SQL.Add('WHERE NUMERO_PEDIDO = :PEDIDO');
+      ParamByName('PEDIDO').Value := NumeroPedido;
+      ExecSQL;
+    end;
+
+    QryPedidoProduto.Connection := FDConnection;
+    with QryPedidoProduto do
+    begin
+      Active := false;
+      SQL.Clear;
+      SQL.Add('DELETE FROM Pedido ');
+      SQL.Add('WHERE NUMERO_PEDIDO = :PEDIDO');
+      ParamByName('PEDIDO').Value := NumeroPedido;
+      ExecSQL;
+    end;
+    FDConnection.Commit;
+    erro := 'Pedido excluído com sucesso!';
+  except
+    on ex: exception do
+    begin
+      FDConnection.Rollback;
+      erro := 'Não foi possivel excluir o pedido!';
+      Result := False;
+    end;
+  end;
+end;
+
+destructor TPedidoDao.Destroy;
+begin
+  FreeAndNil(FDConnection);
+  FreeAndNil(Conexao);
+  FreeAndNil(PedidoProduto);
+  FreeAndNil(Pedido);
+  FreeAndNil(QryPedidoProduto);
+  FreeAndNil(QryPedido);
+  FreeAndNil(QryNumPedido);
+  FreeAndNil(QryAtuPedido);
+  inherited;
+end;
+
+procedure TPedidoDao.GravaPedido(Pedido: TPedido);
+begin
+  QryPedido.Connection := FDConnection;
+  with QryPedido do
+  begin
+    Close;
+    SQL.Clear;
+    SQL.Add('INSERT INTO Pedido(NUMERO_PEDIDO,CODIGO_CLIENTE, VALOR_TOTAL)');
+    SQL.Add('VALUES(:NUMERO_PEDIDO,:CODIGO_CLIENTE,:VALOR_TOTAL)');
+    ParamByName('NUMERO_PEDIDO').Value  := Pedido.NumeroPedido;
+    ParamByName('CODIGO_CLIENTE').Value := Pedido.codigoCliente;
+    ParamByName('VALOR_TOTAL').Value    := Pedido.ValorTotal;
+    ExecSQL;
+  end;
+end;
+
+function TPedidoDao.SelecionaPedido(out erro: string; NumeroPedido: Integer): TFDQuery;
+begin
+  QryPedido.Connection := FDConnection;
+  try
+    with QryPedido do
+    begin
+      SQL.Clear;
+      SQL.Add('SELECT * FROM Pedido ');
+      SQL.Add('WHERE NUMERO_PEDIDO =:NUMERO_PEDIDO');
+      ParamByName('NUMERO_PEDIDO').AsInteger := NumeroPedido;
+      Open;
+
+      if RecordCount = 0 then
+         erro := 'Número do pedido, não encontrado!';
+    end;
+  finally
+    Result := QryPedido;
+  end;
+
+end;
+
+function TPedidoDao.SelecionaPedidoProduto(out erro: String;
+  NumeroPedido: Integer): TFDQuery;
+begin
+  try
+    QryPedidoProduto.Connection := FDConnection;
+    with QryPedidoProduto do
+      begin
+        SQL.Clear;
+        SQL.Add('SELECT c.CODIGO,c.NOME, ');
+        SQL.Add('p.NUMERO_PEDIDO, p.DATA_EMISSAO, p.VALOR_TOTAL as TOTALPEDIDO, ');
+        SQL.Add('pp.CODIGO, pp.CODIGO_PRODUTO, pr.DESCRICAO, ');
+        SQL.Add('pp.QUANTIDADE, pp.CODIGO, pp.VALOR_UNITARIO, pp.VALOR_TOTAL ');
+        SQL.Add('FROM PEDIDO p ');
+        SQL.Add('LEFT JOIN PEDIDO_PRODUTO pp ON p.NUMERO_PEDIDO = pp.NUMERO_PEDIDO ');
+        SQL.Add('LEFT JOIN PRODUTO pr ON pp.CODIGO_PRODUTO = pr.CODIGO ');
+        SQL.Add('INNER JOIN CLIENTE c on P.CODIGO_CLIENTE = C.CODIGO');
+        SQL.Add('WHERE p.NUMERO_PEDIDO = :NUMERO_PEDIDO');
+        ParamByName('NUMERO_PEDIDO').Value := NumeroPedido;
+        Open();
+
+        if RecordCount = 0 then
+           erro := 'Não há produtos para esse pedido!';
+      end;
+  finally
+    Result := QryPedidoProduto;
+  end;
+end;
+
+
+function TPedidoDao.CriarPedido(out erro: string; FDMemPedido: TFDMemTable): Boolean;
+var
+  PedidoProdutoDao : TPedidoProdutoDao;
+begin
+  Result := True;
+  try
+
+    PedidoProdutoDao := TPedidoProdutoDao.Create;
+
+    FDConnection.StartTransaction;
+
+    Pedido.CodigoCliente := FDMemPedido.FieldByName('codigo_cliente').AsInteger;
+    Pedido.ValorTotal    := FDMemPedido.FieldByName('total_pedido').AsFloat;
+
+    // Gera o número do pedido
+    Pedido.NumeroPedido := IntToStr(GeraNumeroPedido);
+
+    // Grava o Pedido
+    GravaPedido(Pedido);
+
+    // Lê os produtos do pedido
+    PedidoProdutoDao.LerPedidoProduto(FDMemPedido,StrToInt(Pedido.NumeroPedido), FDConnection);
+
+    FDConnection.Commit;
+
+  except
+    on ex: exception do
+    begin
+      FDConnection.Rollback;
+      erro   := 'Não foi possivel criar o pedido, processo cancelado '+sLineBreak+ex.Message;
+      Result := False;
+    end;
+  end;
+  FreeAndNil(PedidoProdutoDao);
+end;
+
+function TPedidoDao.GeraNumeroPedido: Integer;
+begin
+  try
+    try
+      QryAtuPedido.Connection := FDConnection;
+      with QryAtuPedido do
+      begin
+        Close;
+        SQL.Clear;
+        SQL.Add('UPDATE NumPedidoSeq SET num_pedido = num_pedido + 1');
+        ExecSQL;
+      end;
+
+      QryNumPedido.Connection := FDConnection;
+      with QryNumPedido do
+      begin
+        Close;
+        SQL.Clear;
+        SQL.Add('SELECT num_pedido AS NUMERO_PEDIDO FROM NumPedidoSeq ');
+        Open;
+      end;
+    except
+      on ex: exception do
+      begin
+        Result := 0;
+      end;
+    end;
+  finally
+    Result := QryNumPedido.FieldByName('NUMERO_PEDIDO').AsInteger;
+  end;
+end;
+
+end.

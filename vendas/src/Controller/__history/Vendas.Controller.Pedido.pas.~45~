@@ -1,0 +1,70 @@
+unit Vendas.Controller.Pedido;
+
+interface
+
+uses
+  Data.DB, Vendas.Dao.Produto, Datasnap.DBClient,
+  Vendas.Dao.Pedido, FireDAC.Comp.Client;
+
+type
+
+  TControllerPedido = class
+
+  private
+
+  PedidoDao : TPedidoDao;
+  QryPedido : TFDQuery;
+
+  public
+
+    constructor Create;
+    destructor Destroy; override;
+
+    function CriarPedido(out erro: string; FDMemPedido: TFDMemTable): Boolean;
+    function DeletePedido(out erro: string;NumeroPedido: Integer): Boolean;
+    function SelecionaPedido(out erro: string; NumeroPedido: Integer): TFDQuery;
+    function SelecionaPedidoProduto(out erro: String; NumeroPedido: Integer): TFDQuery;
+
+  end;
+
+implementation
+
+uses
+  System.SysUtils;
+
+{ TControllerPedido }
+
+constructor TControllerPedido.Create;
+begin
+  PedidoDao := TPedidoDao.Create;
+end;
+
+function TControllerPedido.DeletePedido(out erro: string;NumeroPedido: Integer): Boolean;
+begin
+  Result := PedidoDao.DeletePedido(erro,NumeroPedido);
+end;
+
+destructor TControllerPedido.Destroy;
+begin
+  FreeAndNil(PedidoDao);
+  inherited;
+end;
+
+function TControllerPedido.SelecionaPedido(out erro: string;
+  NumeroPedido: Integer): TFDQuery;
+begin
+  Result := PedidoDao.SelecionaPedido(erro, NumeroPedido);
+end;
+
+function TControllerPedido.SelecionaPedidoProduto(out erro: String;
+  NumeroPedido: Integer): TFDQuery;
+begin
+  Result := PedidoDao.SelecionaPedidoProduto(erro,NumeroPedido);
+end;
+
+function TControllerPedido.CriarPedido(out erro: string; FDMemPedido: TFDMemTable): Boolean;
+begin
+  Result := PedidoDao.CriarPedido2(erro, FDMemPedido);
+end;
+
+end.

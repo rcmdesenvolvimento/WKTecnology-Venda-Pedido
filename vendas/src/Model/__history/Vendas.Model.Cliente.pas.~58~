@@ -1,0 +1,92 @@
+unit Vendas.Model.Cliente;
+
+interface
+
+uses
+  System.Classes, System.SysUtils;
+
+type
+  TCliente = class
+
+  private
+
+    FUf: string;
+    FCodigo: string;
+    FNome: string;
+    FCidade: string;
+
+    function SetCidade: string;
+    function SetCodigo: string;
+    function SetNome: string;
+    function SetUf: string;
+
+  public
+
+    constructor Create;
+
+    destructor Destroy; override;
+
+    property Codigo: string read SetCodigo write FCodigo;
+    property Nome: string read SetNome write FNome;
+    property Cidade: string read SetCidade write FCidade;
+    property Uf: string read SetUf write FUf;
+
+    function validaCliente(out erro: string) : Boolean;
+
+  end;
+
+implementation
+
+var
+  erro : string;
+
+{ TCliente }
+
+constructor TCliente.Create;
+begin
+
+end;
+
+destructor TCliente.Destroy;
+begin
+
+  inherited;
+end;
+
+
+function TCliente.SetCidade: string;
+begin
+  Result := FCidade;
+end;
+
+function TCliente.SetCodigo: string;
+begin
+
+ if FCodigo = EmptyStr then
+  begin
+    raise Exception.Create('Digite o código!');
+  end;
+  Result := FCodigo;
+end;
+
+function TCliente.SetNome: string;
+begin
+  Result := FNome;
+end;
+
+function TCliente.SetUf: string;
+begin
+  Result := FUf;
+end;
+
+function TCliente.validaCliente(out erro: string) : Boolean;
+begin
+  erro := 'Digite o código do cliente!';
+  if (FCodigo = EmptyStr) then
+  begin
+    raise Exception.Create(erro);
+    Result := False;
+  end;
+end;
+
+end.

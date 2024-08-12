@@ -1,0 +1,106 @@
+unit Vendas.Conexao;
+
+interface
+
+type
+
+  TConexao = class
+  private
+
+  public
+
+    constructor Create;
+    destructor Destroy; override;
+
+    function SetupConnection(FConn: TFDConnection): String;
+    function Connect: TFDConnection;
+    procedure Disconect;
+
+  end;
+
+var
+  FConnection: TFDConnection;
+
+implementation
+
+uses
+  Winapi.Windows,System.IniFiles, System.SysUtils, FireDAC.Comp.Client;
+
+{ TConexao }
+
+function TConexao.Connect: TFDConnection;
+begin
+  FConnection := TFDConnection.Create(nil);
+  SetupConnection(FConnection);
+  FConnection.Connected := true;
+
+  Result := FConnection;
+
+end;
+
+constructor TConexao.Create;
+begin
+
+end;
+
+destructor TConexao.Destroy;
+begin
+
+  inherited;
+end;
+
+procedure TConexao.Disconect;
+begin
+  if Assigned(FConnection) then
+  begin
+    if FConnection.Connected then
+      FConnection.Connected := false;
+
+    FConnection.Free;
+  end;
+
+end;
+
+function TConexao.SetupConnection(FConn: TFDConnection): String;
+var
+  arq_ini: string;
+  ini: TIniFile;
+begin
+
+  try
+    try
+      arq_ini := GetCurrentDir + '\config.ini';
+
+      // Verifica se INI existe...
+      if NOT FileExists(arq_ini) then
+      begin
+        Result := 'Arquivo INI não encontrado: ' + arq_ini;
+        exit;
+      end;
+
+      // Instanciar arquivo INI...
+      ini := TIniFile.Create(arq_ini);
+
+      // Buscar dados do arquivo fisico...
+      FConn.Params.Clear;
+      FConn.Params.Values['Database']  := ini.ReadString('Conexao', 'Database', '');
+      FConn.Params.Values['User_name'] := ini.ReadString('Conexao','User_name', '');
+      FConn.Params.Values['Password']  := ini.ReadString('Conexao', 'Password', '');
+      FConn.Params.Values['DriverID']  := ini.ReadString('Conexao', 'DriverName', '');
+      FConn.Params.Values['Port']      := ini.ReadString('Conexao', 'Port', '');
+      FConn.Params.Values['Server']    := ini.ReadString('Conexao', 'Server', '');
+
+      Result := 'OK';
+    except
+      on ex: exception do
+        Result := 'Erro ao configurar banco: ' + ex.Message;
+    end;
+
+  finally
+    if Assigned(ini) then
+      ini.DisposeOf;
+  end;
+
+end;
+
+end.

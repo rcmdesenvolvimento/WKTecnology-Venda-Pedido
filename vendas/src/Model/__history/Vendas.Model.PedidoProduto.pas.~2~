@@ -1,0 +1,14 @@
+unit Vendas.Model.PedidoProduto;
+
+interface
+
+type
+  TPedidoProduto = class
+  private
+  public
+
+  end;
+
+implementation
+
+end.

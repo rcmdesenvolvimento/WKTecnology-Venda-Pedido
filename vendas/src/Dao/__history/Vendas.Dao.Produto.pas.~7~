@@ -1,0 +1,54 @@
+unit Vendas.Dao.Produto;
+
+interface
+
+uses
+  FireDAC.Comp.Client, FireDAC.DApt, Vendas.Conexao;
+
+type
+
+  TProdutoDao = class
+
+  private
+
+  public
+
+    constructor Create;
+    destructor Destroy; override;
+
+    function SelecionaProduto(out erro: string; Codigo: Integer): TFDQuery;
+
+  end;
+
+var
+  FDConnection: TFDConnection;
+  Conexao: TConexao;
+  QryCliente: TFDQuery;
+
+implementation
+
+uses
+  System.SysUtils;
+
+{ TProdutoDao }
+
+constructor TProdutoDao.Create;
+begin
+
+end;
+
+destructor TProdutoDao.Destroy;
+begin
+  FDConnection.Connected := False;
+  FreeAndNil(FDConnection);
+  FreeAndNil(Conexao);
+  FreeAndNil(QryCliente);
+  inherited;
+end;
+
+function TProdutoDao.SelecionaProduto(out erro: string; Codigo: Integer): TFDQuery;
+begin
+
+end;
+
+end.

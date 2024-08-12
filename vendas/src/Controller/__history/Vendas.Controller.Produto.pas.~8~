@@ -1,0 +1,49 @@
+unit Vendas.Controller.Produto;
+
+interface
+
+uses
+  FireDAC.Comp.Client, Data.DB;
+
+type
+
+  TControllerProduto = class
+
+  private
+
+  //ClienteDao : TClienteDao;
+  QryProduto : TFDQuery;
+
+  public
+
+    constructor Create;
+    destructor Destroy; override;
+
+    function SelecionaProduto(out erro : string; Codigo : string): TFDQuery;
+
+  end;
+
+implementation
+
+uses
+  System.SysUtils;
+
+{ TControllerProduto }
+
+constructor TControllerProduto.Create;
+begin
+  QryProduto := TFDQuery.Create(Nil);
+end;
+
+destructor TControllerProduto.Destroy;
+begin
+  FreeAndNil(QryProduto);
+  inherited;
+end;
+
+function TControllerProduto.SelecionaProduto(out erro: string; Codigo: string): TFDQuery;
+begin
+  Result :=
+end;
+
+end.
